@@ -14,7 +14,7 @@ class Controller:
         cols = self.view.recv_columns()
         limit = self.view.recv_input("Input the limit for shown table (Leave blank to show all): ")
 
-        if limit == 0:
+        if limit <= 0:
             raise DatabaseError("LIMIT value has to be greater than 0.")
 
         result = self.model.fetch_all(table_name, cols if cols[0] else [], limit)

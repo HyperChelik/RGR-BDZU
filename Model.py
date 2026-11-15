@@ -101,7 +101,7 @@ class Model:
 
         except psycopg.errors.ForeignKeyViolation as e:
             raise DatabaseError(f"Foreign key violation: the table {table_name} is connected with other tables "
-                                f"via foreign key or key doesn't exist: {e.diag.message_detail}.")
+                                f"via foreign key or key doesn't exist.")
         except psycopg.errors.UniqueViolation:
             raise DatabaseError(f"Unique violation: entry with provided prime key already exists.")
         except psycopg.errors.InvalidDatetimeFormat:
@@ -133,7 +133,7 @@ class Model:
 
         except psycopg.errors.ForeignKeyViolation as e:
             raise DatabaseError(f"Foreign key violation: the table {table_name} is connected with other tables "
-                                f"via foreign key or key doesn't exist: {e.diag.message_detail}.")
+                                f"via foreign key or key doesn't exist.")
         except psycopg.errors.UniqueViolation:
             raise DatabaseError(f"Unique violation: entry with provided prime key already exists.")
         except psycopg.errors.InvalidDatetimeFormat:
@@ -165,7 +165,7 @@ class Model:
 
         except psycopg.errors.ForeignKeyViolation as e:
             raise DatabaseError(f"Foreign key violation: the table {table_name} is connected with other tables "
-                                f"via foreign key or key doesn't exist: {e.diag.message_detail}.")
+                                f"via foreign key or key doesn't exist.")
         except psycopg.errors.UniqueViolation:
             raise DatabaseError(f"Unique violation: entry with provided prime key already exists.")
         except psycopg.errors.InvalidDatetimeFormat:
@@ -210,7 +210,7 @@ class Model:
 
         except psycopg.errors.ForeignKeyViolation as e:
             raise DatabaseError(f"Foreign key violation: the table {table_name} is connected with other tables "
-                                f"via foreign key or key doesn't exist: {e.diag.message_detail}.")
+                                f"via foreign key or key doesn't exist.")
         except psycopg.errors.UniqueViolation:
             raise DatabaseError(f"Unique violation: entry with provided prime key already exists.")
         except psycopg.errors.InvalidDatetimeFormat:
@@ -240,7 +240,7 @@ class Model:
 
         except psycopg.errors.ForeignKeyViolation as e:
             raise DatabaseError(f"Foreign key violation: the table {table_name} is connected with other tables "
-                                f"via foreign key or key doesn't exist: {e.diag.message_detail}.")
+                                f"via foreign key or key doesn't exist.")
         except psycopg.errors.UniqueViolation:
             raise DatabaseError(f"Unique violation: entry with provided prime key already exists.")
         except psycopg.errors.InvalidDatetimeFormat:
