@@ -14,6 +14,11 @@ class Controller:
         cols = self.view.recv_columns()
         limit = self.view.recv_input("Input the limit for shown table (Leave blank to show all): ")
 
+        try:
+            limit = int(limit)
+        except:
+            raise DatabaseError("LIMIT value has to be an integer. ")
+
         if limit <= 0:
             raise DatabaseError("LIMIT value has to be greater than 0.")
 
@@ -28,9 +33,10 @@ class Controller:
 
     def handle_insertrow(self):
         table_name = self.view.recv_table_name()
+        pk_list = self.model.get_table_pk(table_name)
         cols_list = self.model.get_table_cols(table_name)
 
-        pseudo_fill = {col: "-" for col in cols_list}
+        pseudo_fill = {col: "*" if col in pk_list else "-" for col in cols_list}
         self.view.draw_table([pseudo_fill])
 
         recv = self.view.recv_row(cols_list)
@@ -81,7 +87,15 @@ class Controller:
 
     def handle_generatedata(self):
         table_name = self.view.recv_table_name()
-        amount = self.view.recv_input("Enter the int value: ", int)
+        amount = self.view.recv_input("Enter the int value: ")
+
+        try:
+            amount = int(amount)
+        except:
+            raise DatabaseError("The amount of data generated has to be an integer. ")
+
+        if amount <= 0:
+            raise DatabaseError("The amount of data generated has to be greater than 0.")
 
         inserted = self.model.generate_data(table_name, amount)
 
@@ -95,25 +109,25 @@ class Controller:
 
         if query_id == 1:
             self.view.print_message("Use '%' as wildcard for LIKE filters (e.g. %Хірург% or Іваненко%).")
-            spec_like = self.view.recv_input("Doctor specialization pattern (LIKE): ", str)
-            pat_like = self.view.recv_input("Patient name pattern (LIKE): ", str)
-            date_from = self.view.recv_input("Start date (YYYY-MM-DD HH:MM:SS): ", str)
-            date_to = self.view.recv_input("End date (YYYY-MM-DD HH:MM:SS): ", str)
+            spec_like = self.view.recv_input("Doctor specialization pattern (LIKE): ")
+            pat_like = self.view.recv_input("Patient name pattern (LIKE): ")
+            date_from = self.view.recv_input("Start date (YYYY-MM-DD HH:MM:SS): ")
+            date_to = self.view.recv_input("End date (YYYY-MM-DD HH:MM:SS): ")
             params = (spec_like, pat_like, date_from, date_to)
 
         elif query_id == 2:
             self.view.print_message("Use '%' as wildcard for LIKE filters (e.g. %бронхіт%).")
-            illness_like = self.view.recv_input("Illness name pattern (LIKE): ", str)
-            date_from = self.view.recv_input("Start date (YYYY-MM-DD HH:MM:SS): ", str)
-            date_to = self.view.recv_input("End date (YYYY-MM-DD HH:MM:SS): ", str)
+            illness_like = self.view.recv_input("Illness name pattern (LIKE): ")
+            date_from = self.view.recv_input("Start date (YYYY-MM-DD HH:MM:SS): ")
+            date_to = self.view.recv_input("End date (YYYY-MM-DD HH:MM:SS): ")
             params = (illness_like, date_from, date_to)
 
         elif query_id == 3:
-            doc_like = self.view.recv_input("Doctor name pattern (LIKE, e.g. %): ", str)
-            date_from = self.view.recv_input("Start date (YYYY-MM-DD HH:MM:SS): ", str)
-            date_to = self.view.recv_input("End date (YYYY-MM-DD HH:MM:SS): ", str)
-            min_visits = self.view.recv_input("Minimum appointments count (int): ", int)
-            max_visits = self.view.recv_input("Maximum appointments count (int): ", int)
+            doc_like = self.view.recv_input("Doctor name pattern (LIKE, e.g. %): ")
+            date_from = self.view.recv_input("Start date (YYYY-MM-DD HH:MM:SS): ")
+            date_to = self.view.recv_input("End date (YYYY-MM-DD HH:MM:SS): ")
+            min_visits = self.view.recv_input("Minimum appointments count (int): ")
+            max_visits = self.view.recv_input("Maximum appointments count (int): ")
             params = (doc_like, date_from, date_to, min_visits, max_visits)
 
         else:
