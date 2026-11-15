@@ -1,5 +1,6 @@
 import time
 from dataclasses import field
+from hashlib import file_digest
 from typing import  Any
 
 import psycopg
@@ -178,15 +179,22 @@ class Model:
         if not pk_values or not new_data:
             raise DatabaseError("No prime keys or new data provided")
 
+        filtrated_data = {
+            key: val for key, val in new_data.items() if val is not None and val != ""
+        }
+
+        if not filtrated_data:
+            raise DatabaseError("No new valid dat provided for update.")
+
         set_clauses = [
-            sql.SQL("{col} = %s").format(col=sql.Identifier(col)) for col in new_data.keys()
+            sql.SQL("{col} = %s").format(col=sql.Identifier(col)) for col in filtrated_data.keys()
         ]
 
         where_clauses = [
             sql.SQL("{pk} = %s").format(pk=sql.Identifier(pk)) for pk in pk_values.keys()
         ]
 
-        params = tuple(new_data.values()) + tuple(pk_values.values())
+        params = tuple(filtrated_data.values()) + tuple(pk_values.values())
 
         try:
             with psycopg.connect(self.dsn, row_factory=dict_row) as conn:
